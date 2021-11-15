@@ -1,0 +1,146 @@
+<nz-layout>
+  <nz-header>Header</nz-header>
+  <nz-content>
+    <div class="main-container">
+      <div class="header">
+        <div class="header-content">
+          <h1 class="text">Interviews</h1>
+        </div>
+        <div class="btn-holder">
+          <div id="newfeed-button">
+            <div class="feedback-button">
+              <div class="new-feedback clickable" (click)="showModal()">
+                <div class="icon">
+                  <i nz-icon nzType="plus" nzTheme="outline"></i>
+                </div>
+                <div class="newFeedbackText pointer">New Interview</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="body">
+        <div class="search-input-holder">
+          <nz-input-group>
+            <input nz-input nzBorderless type="text" class="text" placeholder="Filter by name" />
+          </nz-input-group>
+          <ng-template #prefixTemplateUser>
+            <i nz-icon nzType="search" nzTheme="outline" class="searchIcon"></i>
+          </ng-template>
+        </div>
+        <div class="table-container">
+          <nz-table #basicTable [nzData]="interviews" [nzFrontPagination]="false">
+            <thead>
+              <tr>
+                <th class="text">
+                  Status
+                </th>
+                <th class="text">
+                  Interviewee Name
+                </th>
+                <th class="text">
+                  Interviewer Name
+                </th>
+                <th class="text">
+                  Meeting Room Name
+                </th>
+                <th class="text">
+                  Date
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let interview of basicTable.data">
+                <td>
+                  <div class="column-content">
+                    <span class="upper-content text">
+
+                      <div class="statusTrue"
+                        [ngClass]="{'statusTrue':interview.status==true,'statusFalse':interview.status==false}">
+                      </div>
+                      <p *ngIf="interview.status==true">Online</p>
+                      <p *ngIf="interview.status==false">Offline</p>
+                    </span>
+                  </div>
+                </td>
+                <td>
+                  <div class="column-content">
+                    <span class="upper-content text">
+                      <p>{{interview.intervieweeName}}</p>
+                    </span>
+                  </div>
+                </td>
+                <td>
+                  <div class="column-content">
+                    <span class="upper-content text">{{interview.interviewerName}}</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="column-content">
+                    <span class="upper-content text">{{interview.meetingRoomName}}</span>
+                  </div>
+                </td>
+                <td>
+                  <span class="upper-content text">{{interview.date}}</span>
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+        </div>
+      </div>
+    </div>
+
+    <nz-modal [(nzVisible)]="isVisible" nzTitle="The first Modal" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+      <ng-container *nzModalContent>
+        <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+          <nz-form-item>
+            <nz-form-label [nzSm]="10" [nzXs]="24">Interview Date</nz-form-label>
+            <nz-form-control [nzSm]="16" [nzXs]="24">
+              <nz-date-picker nzShowTime formControlName="datePicker"></nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label [nzSpan]="6">Position</nz-form-label>
+            <nz-form-control nzHasFeedback [nzSpan]="12" nzErrorTip="Input is required">
+              <input nz-input formControlName="position" name="required" />
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label [nzSpan]="12">Interviewee Name</nz-form-label>
+            <nz-form-control nzHasFeedback [nzSpan]="12" nzErrorTip="Input is required">
+              <input nz-input formControlName="intervieweeName" name="required" />
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label [nzSpan]="12" nzFor="gender">Available Room</nz-form-label>
+            <nz-form-control [nzSpan]="20" nzErrorTip="Please select a Room!">
+              <nz-select id="gender" formControlName="gender" nzPlaceHolder="Select a meeting room"
+                formControlName="availableRoom">
+                <nz-option nzValue="1" nzLabel="Meeting Room 1"></nz-option>
+                <nz-option nzValue="2" nzLabel="Meeting Room 2"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label [nzSpan]="5" nzFor="gender">Staff</nz-form-label>
+            <nz-form-control [nzSpan]="20" nzErrorTip="Please select a Room!">
+              <nz-select id="gender" formControlName="gender" nzPlaceHolder="Select a staff member"
+                formControlName="availableStaff">
+                <nz-option nzValue="1" nzLabel="Meeting Room 1"></nz-option>
+                <nz-option nzValue="2" nzLabel="Meeting Room 2"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+
+        </form>
+      </ng-container>
+    </nz-modal>
+
+    <ng-template #checkedTemplate><i nz-icon nzType="check"></i></ng-template>
+  </nz-content>
+
+</nz-layout>
